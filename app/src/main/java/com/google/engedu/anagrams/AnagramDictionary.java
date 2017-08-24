@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
 
 public class AnagramDictionary {
@@ -32,13 +31,13 @@ public class AnagramDictionary {
     private static final int MAX_WORD_LENGTH = 7;
     private Random random = new Random();
     private ArrayList<String> WordList = new ArrayList<String>();
+    private HashSet<String> wordSet = new HashSet<String>();
+    private HashMap<String,ArrayList<String>> lettersToWord = new HashMap<String, ArrayList<String>>();
 
 
     public AnagramDictionary(Reader reader) throws IOException {
         BufferedReader in = new BufferedReader(reader);
         String line;
-        HashSet<String> wordSet = new HashSet<String>();
-        HashMap<String,ArrayList<String>> lettersToWord = new HashMap<String, ArrayList<String>>();
         while((line = in.readLine()) != null) {
             String word = line.trim();
             WordList.add(word);
@@ -62,7 +61,8 @@ public class AnagramDictionary {
     }
 
     public boolean isGoodWord(String word, String base) {
-        return true;
+
+        return wordSet.contains(word);
     }
 
     public ArrayList<String> getAnagrams(String targetWord) {
@@ -77,10 +77,23 @@ public class AnagramDictionary {
             return result;
     }
 
-    public List<String> getAnagramsWithOneMoreLetter(String word) {
+
+
+    public ArrayList<String> getAnagramsWithOneMoreLetter(String targetWord) {
+        //String sortedWord = sortWords(targetWord);
         ArrayList<String> result = new ArrayList<String>();
+        String temp;
+        for (char i = 'a';i < 'z' ; i++) {
+            temp = targetWord + i;
+            String elem = sortWords(temp);
+            if (lettersToWord.containsKey(elem)) {
+                ArrayList tempList = lettersToWord.get(elem);
+                result.addAll(tempList);
+            }
+        }
         return result;
     }
+
 
     public String pickGoodStarterWord() {
         return "post";
