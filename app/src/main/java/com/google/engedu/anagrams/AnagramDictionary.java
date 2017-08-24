@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -35,10 +37,23 @@ public class AnagramDictionary {
     public AnagramDictionary(Reader reader) throws IOException {
         BufferedReader in = new BufferedReader(reader);
         String line;
-
+        HashSet<String> wordSet = new HashSet<String>();
+        HashMap<String,ArrayList<String>> lettersToWord = new HashMap<String, ArrayList<String>>();
         while((line = in.readLine()) != null) {
             String word = line.trim();
             WordList.add(word);
+            wordSet.add(word);
+            String temp = sortWords(word);
+            if(lettersToWord.containsKey(temp)){
+                ArrayList<String> putList = new ArrayList<String>(lettersToWord.get(temp));
+                putList.add(word);
+                lettersToWord.put(temp , putList);
+            }
+            else {
+                ArrayList<String> tempList = new ArrayList<>() ;
+                tempList.add(word);
+                lettersToWord.put(temp, tempList);
+            }
         }
         /*for(String elem:WordList){
          Log.d(TAG,elem);
@@ -50,7 +65,7 @@ public class AnagramDictionary {
         return true;
     }
 
-    public List<String> getAnagrams(String targetWord) {
+    public ArrayList<String> getAnagrams(String targetWord) {
         String sortedWord = sortWords(targetWord);
         ArrayList<String> result = new ArrayList<String>();
         for(String elem2:WordList){
@@ -59,7 +74,6 @@ public class AnagramDictionary {
                 result.add(elem2);
             }
         }
-
             return result;
     }
 
