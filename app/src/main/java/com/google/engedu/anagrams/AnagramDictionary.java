@@ -100,13 +100,13 @@ public class AnagramDictionary {
     public String pickGoodStarterWord() {
         Random rand = new Random();
         while(true) {
-            for (int i = rand.nextInt(WordList.size()); i < WordList.size(); i++) {
+            for (int i = rand.nextInt(WordList.size()-10) + rand.nextInt(10); i < WordList.size(); i++) {
                 String elem = WordList.get(i);
                 String sortWord = sortWords(elem);
                 int len = lettersToWord.get(sortWord).size();
                 if (len >= MIN_NUM_ANAGRAMS && elem.length() == worldLen) {
                     if (worldLen == MAX_WORD_LENGTH) {
-                        worldLen = DEFAULT_WORD_LENGTH;
+                        worldLen = DEFAULT_WORD_LENGTH+1;
                     } else
                         worldLen++;
                     return elem;
