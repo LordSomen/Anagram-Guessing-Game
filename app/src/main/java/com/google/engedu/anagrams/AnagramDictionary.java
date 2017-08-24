@@ -27,12 +27,14 @@ import java.util.Random;
 public class AnagramDictionary {
     private static final String TAG = "AnagramDictionary";
     private static final int MIN_NUM_ANAGRAMS = 5;
-    private static final int DEFAULT_WORD_LENGTH = 3;
+    private static final int DEFAULT_WORD_LENGTH = 4;
     private static final int MAX_WORD_LENGTH = 7;
+    private static int worldLen ;
     private Random random = new Random();
     private ArrayList<String> WordList = new ArrayList<String>();
     private HashSet<String> wordSet = new HashSet<String>();
     private HashMap<String,ArrayList<String>> lettersToWord = new HashMap<String, ArrayList<String>>();
+    static{ worldLen = DEFAULT_WORD_LENGTH;}
 
 
     public AnagramDictionary(Reader reader) throws IOException {
@@ -97,15 +99,20 @@ public class AnagramDictionary {
 
     public String pickGoodStarterWord() {
         Random rand = new Random();
-        for(int i = rand.nextInt(WordList.size());i<WordList.size();i++){
-            String elem = WordList.get(i);
-            String sortWord = sortWords(elem);
-            int len = lettersToWord.get(sortWord).size();
-            if(len >= MIN_NUM_ANAGRAMS){
-                return elem;
+        while(true) {
+            for (int i = rand.nextInt(WordList.size()); i < WordList.size(); i++) {
+                String elem = WordList.get(i);
+                String sortWord = sortWords(elem);
+                int len = lettersToWord.get(sortWord).size();
+                if (len >= MIN_NUM_ANAGRAMS && elem.length() == worldLen) {
+                    if (worldLen == MAX_WORD_LENGTH) {
+                        worldLen = DEFAULT_WORD_LENGTH;
+                    } else
+                        worldLen++;
+                    return elem;
+                }
             }
         }
-        return "404";
     }
 
     public String sortWords(String word){
