@@ -96,7 +96,16 @@ public class AnagramDictionary {
 
 
     public String pickGoodStarterWord() {
-        return "post";
+        Random rand = new Random();
+        for(int i = rand.nextInt(WordList.size());i<WordList.size();i++){
+            String elem = WordList.get(i);
+            String sortWord = sortWords(elem);
+            int len = lettersToWord.get(sortWord).size();
+            if(len >= MIN_NUM_ANAGRAMS){
+                return elem;
+            }
+        }
+        return "404";
     }
 
     public String sortWords(String word){
