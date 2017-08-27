@@ -93,6 +93,7 @@ public class AnagramDictionary {
                 result.addAll(tempList);
             }
         }
+        result = subStringChecking(result , targetWord);
         return result;
     }
 
@@ -122,5 +123,19 @@ public class AnagramDictionary {
         String sortedWord = new String(arr);
         return sortedWord;
 
+    }
+
+    public ArrayList<String> subStringChecking(ArrayList<String> tempList , String targetWord){
+
+        for(int i=0; i < tempList.size();i++){
+            String elem = tempList.get(i);
+            boolean check = elem.contains(targetWord);
+            if(check==true){
+                tempList.remove(elem);
+            }
+            else
+                continue;
+        }
+        return tempList;
     }
 }
